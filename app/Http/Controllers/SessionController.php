@@ -26,21 +26,15 @@ class SessionController extends Controller
     }
 
     public function store(){
-        //Attempt to authentificate the user
 
-        if (!auth()->attempt(\request(['email', 'password']))){
+        if (! auth()->attempt(request(['email', 'password']))){
             return back()->withErrors([
                 'message' => 'Please check your credentials and try again'
             ]);
         }
 
 
-        //If not redirect
 
         return redirect()->home();
-
-        //If so sign them in
-
-        //Refdirection to the home page
     }
 }
