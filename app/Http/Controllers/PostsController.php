@@ -16,8 +16,13 @@ class PostsController extends Controller
     public function index()
     {
         $posts = Post::all();
+        $archives = Post::selectRaw('year (created_at) year, monthname(created_at) month, count(*) published')
+            ->groupBy('year', 'month')
+            ->orderByRaw('min(created_at)')
+            ->get()
+            ->toArray();
 
-        return view ('posts.index', compact ('posts'));
+        return view ('posts.index', compact ('posts', 'archives'));
 
     }
 
