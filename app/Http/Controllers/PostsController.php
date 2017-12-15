@@ -6,17 +6,34 @@ use Illuminate\Http\Request;
 
 use App\Post;
 
+use Carbon\Carbon;
+
 class PostsController extends Controller
 {
     public function __construct()
     {
-        //$this->middleware('auth')->except(['index', 'show']);
+        $this->middleware('auth')->except(['index', 'show']);
     }
 
+
+
+
+
+
     public function index()
+
     {
-        $posts = Post::all();
-        $archives = Post::selectRaw('year (created_at) year, monthname(created_at) month, count(*) published')
+        $posts = Post::latest()->get();
+
+        if($month = request('month')){
+            $posts->whereMonth('created_at' , Carbon::parse($month)->month);
+        }
+        if ($year = request('year')){
+            $posts->whereYear('created_at', $year);
+        }
+
+
+         $archives = Post::selectRaw('year (created_at) year, monthname(created_at) month, count(*) published')
             ->groupBy('year', 'month')
             ->orderByRaw('min(created_at)')
             ->get()
@@ -26,16 +43,18 @@ class PostsController extends Controller
 
     }
 
-    public function show($id)
-    {
-        $post = Post::find($id);
 
-        return view ('posts.show', compact('post'));
+    public function show($id)
+
+    {
+
+
+        return view ('posts.show', compact('post', 'archives'));
     }
 
     public function create()
     {
-        return view ('posts.create');
+        return view ('posts.create' , compact('archives'));
     }
 
     public function store()

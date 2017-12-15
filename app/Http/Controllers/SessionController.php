@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Http\Controllers\PostsController;
 
 class SessionController extends Controller
 {
@@ -15,7 +16,9 @@ class SessionController extends Controller
     //
     public function create()
     {
-        return view ('sessions.create');
+        $postElement = new PostsController();
+        $archives = $postElement->get_archives_links();
+        return view ('sessions.create', compact('archives'));
     }
 
     public function destroy()
