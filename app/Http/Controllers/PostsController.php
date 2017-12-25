@@ -32,14 +32,7 @@ class PostsController extends Controller
             $posts->whereYear('created_at', $year);
         }
 
-
-         $archives = Post::selectRaw('year (created_at) year, monthname(created_at) month, count(*) published')
-            ->groupBy('year', 'month')
-            ->orderByRaw('min(created_at)')
-            ->get()
-            ->toArray();
-
-        return view ('posts.index', compact ('posts', 'archives'));
+         return view ('posts.index', compact ('posts'));
 
     }
 
@@ -48,13 +41,13 @@ class PostsController extends Controller
 
     {
 
-
-        return view ('posts.show', compact('post', 'archives'));
+        $post = Post::find($id);
+        return view ('posts.show', compact('post'));
     }
 
     public function create()
     {
-        return view ('posts.create' , compact('archives'));
+        return view ('posts.create' );
     }
 
     public function store()
