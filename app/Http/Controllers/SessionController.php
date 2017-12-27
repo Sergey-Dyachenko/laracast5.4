@@ -16,9 +16,7 @@ class SessionController extends Controller
     //
     public function create()
     {
-        $postElement = new PostsController();
-        $archives = $postElement->get_archives_links();
-        return view ('sessions.create', compact('archives'));
+          return view ('sessions.create');
     }
 
     public function destroy()
@@ -29,6 +27,8 @@ class SessionController extends Controller
     }
 
     public function store(){
+
+        dd(auth()->attempt(request(['email', 'password'])));
 
         if (! auth()->attempt(request(['email', 'password']))){
             return back()->withErrors([
