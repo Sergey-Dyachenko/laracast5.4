@@ -9,7 +9,10 @@ use App\Comment;
 class CommentsController extends Controller
 {
     public function store(Post $post)
+
+
     {
+        dd('test');
         $this->validate(\request(), ['body' => 'required|min:2']);
 
         $post->addComment(\request('body'));

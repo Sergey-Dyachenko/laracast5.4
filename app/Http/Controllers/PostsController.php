@@ -8,6 +8,8 @@ use App\Post;
 
 use Carbon\Carbon;
 
+use App\User;
+
 class PostsController extends Controller
 {
     public function __construct()
@@ -23,7 +25,7 @@ class PostsController extends Controller
     public function index()
 
     {
-        $posts = Post::latest()->get();
+        $posts = Post::latest();
 
         if($month = request('month')){
             $posts->whereMonth('created_at' , Carbon::parse($month)->month);
@@ -31,6 +33,8 @@ class PostsController extends Controller
         if ($year = request('year')){
             $posts->whereYear('created_at', $year);
         }
+
+        $posts = $posts->get();
 
          return view ('posts.index', compact ('posts'));
 

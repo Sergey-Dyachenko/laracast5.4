@@ -28,7 +28,6 @@ class SessionController extends Controller
 
     public function store(){
 
-        dd(auth()->attempt(request(['email', 'password'])));
 
         if (! auth()->attempt(request(['email', 'password']))){
             return back()->withErrors([
